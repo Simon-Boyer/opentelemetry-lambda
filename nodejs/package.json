@@ -42,6 +42,7 @@
     "lerna": "^6.5.1",
     "lerna-changelog": "2.2.0",
     "rimraf": "5.0.5",
+    "tslint-microsoft-contrib": "6.2.0",
     "typescript": "5.3.3"
   },
   "changelog": {

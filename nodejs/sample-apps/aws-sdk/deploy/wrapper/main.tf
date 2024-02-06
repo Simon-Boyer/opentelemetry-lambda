@@ -5,7 +5,7 @@ module "hello-lambda-function" {
   architectures = compact([var.architecture])
   function_name = var.name
   handler       = "index.handler"
-  runtime       = "nodejs14.x"
+  runtime       = "nodejs16.x"
 
   create_package         = false
   local_existing_package = "${path.module}/../../build/function.zip"
@@ -20,10 +20,11 @@ module "hello-lambda-function" {
 
   environment_variables = {
     AWS_LAMBDA_EXEC_WRAPPER     = "/opt/otel-handler"
-    OTEL_TRACES_EXPORTER        = "logging"
-    OTEL_METRICS_EXPORTER       = "logging"
+    # OTEL_TRACES_EXPORTER        = "debug,datadog,otlp"
+    #OTEL_METRICS_EXPORTER       = "logging"
     OTEL_LOG_LEVEL              = "DEBUG"
-    OTEL_EXPORTER_OTLP_ENDPOINT = "http://localhost:4318/"
+    # OTEL_EXPORTER_OTLP_ENDPOINT = "http://localhost:4318/"
+    OTEL_TRACES_SAMPLER         = "always_on"
   }
 
   tracing_mode = var.tracing_mode

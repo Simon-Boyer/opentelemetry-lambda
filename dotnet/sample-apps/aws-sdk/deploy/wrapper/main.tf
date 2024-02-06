@@ -17,6 +17,10 @@ module "hello-lambda-function" {
     var.collector_layer_arn
   ])
 
+  environment_variables = {
+    OTEL_TRACES_SAMPLER         = "always_on"
+  }
+
   tracing_mode = var.tracing_mode
 
   attach_policy_statements = true

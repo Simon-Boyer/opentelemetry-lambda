@@ -9,15 +9,35 @@ receivers:
 exporters:
   logging:
     loglevel: debug
-
+  debug:
+    verbosity: detailed
+  datadog:
+    api:
+      key: REPLACE
+    retry_on_failure:
+      enabled: true
+      initial_interval: 1s
+      max_interval: 30s
+      max_elapsed_time: 30s
+processors:
+  decouple:
+    max_queue_size: 5
+  resource:
+    attributes:
+    - key: env
+      value: "lambda_otel"
+      action: upsert
+  batch:
+    timeout: 30s
 service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [logging]
+      processors: [resource, decouple]
+      exporters: [datadog]
     metrics:
       receivers: [otlp]
       exporters: [logging]
   telemetry:
-    metrics:
-      address: localhost:8888
+    logs:
+      level: "debug"
